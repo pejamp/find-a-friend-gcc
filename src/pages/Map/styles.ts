@@ -51,7 +51,7 @@ export const HeaderSelect = styled.select`
   outline: none;
   appearance: none;
 
-  font-family: Nunito;
+  font-family: 'Nunito';
   font-size: 16px;
   color: #0d3b66;
 `

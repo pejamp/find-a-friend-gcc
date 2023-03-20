@@ -42,7 +42,7 @@ export const FilterInput = styled.select`
     content: '⌄';
     width: 12px;
     height: 6px;
-    display: absolute;
+    position: absolute;
     color: #ffffff;
   }
 `
