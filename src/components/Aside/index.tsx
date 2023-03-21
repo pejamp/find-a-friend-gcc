@@ -1,7 +1,7 @@
 import { Select } from '@/components/Select'
 
 import logo from '@/assets/icons/logo.svg'
-import search from '@/assets/icons/search.svg'
+import chevron from '../../assets/icons/chevron-bottom.svg';
 
 import {
   Container,
@@ -10,7 +10,10 @@ import {
   AsideContent,
   ContentHeader,
   ContentFilters,
+  SelectWrapper,
+  HeaderSelect
 } from './styles'
+import { SearchButton } from '../SearchButton'
 
 const ageOptions = [
   {
@@ -92,10 +95,19 @@ export function Aside() {
         <div>
           <img src={logo} alt="" />
           <HeaderInput>
-            <input type="text" placeholder="Insira uma cidade" />
-            <button>
-              <img src={search} alt="ícone de lupa" />
-            </button>
+            <SelectWrapper>
+              <HeaderSelect name="uf" id="uf">
+                <option value="pe">PE</option>
+              </HeaderSelect>
+              <img src={chevron} alt="" />
+            </SelectWrapper>
+            <SelectWrapper>
+              <HeaderSelect name="city" id="city">
+                <option value="recife">Recife</option>
+              </HeaderSelect>
+              <img src={chevron} alt="" />
+            </SelectWrapper>
+            <SearchButton />
           </HeaderInput>
         </div>
       </AsideHeader>

@@ -10,20 +10,22 @@ export const AsideHeader = styled.div`
   height: 241px;
   background-color: #e44449;
 
-  img {
-    width: 45px;
-  }
-
+  
   & > div {
-    padding: 81px 56px 26px;
+    padding: 81px 0 26px 56px;
     display: flex;
     flex-direction: column;
     gap: 26px;
+    
+    > img {
+      width: 45px;
+    }
   }
 `
 
 export const HeaderInput = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 67px 145px auto;
   gap: 12px;
 
   input {
@@ -46,21 +48,9 @@ export const HeaderInput = styled.div`
   button {
     width: 60px;
     height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background-color: #f4d35e;
-    border: none;
-    border-radius: 20px;
-    transition: filter 0.2s;
 
     img {
       width: 22px;
-    }
-
-    :hover {
-      filter: brightness(0.9);
     }
   }
 `
@@ -83,4 +73,47 @@ export const ContentFilters = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+`
+
+export const SelectWrapper = styled.div`
+  position: relative;
+
+  & > img {
+    position: absolute;
+    right: 14px;
+    width: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`
+
+export const HeaderSelect = styled.select`
+  width: 100%;
+  height: 60px;
+  padding: 14px;
+  border: 1px solid #F15156;
+  border-radius: 15px;
+  background-color: transparent;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 300ms ease-out;
+
+  option {
+    font-family: 'Nunito';
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    padding: 8px;
+    background-color: #E44449;
+  }
 `

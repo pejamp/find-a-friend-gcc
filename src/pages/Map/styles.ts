@@ -7,17 +7,20 @@ export const Container = styled.div`
 export const Content = styled.div`
   flex: 1;
   background-color: #fdeced;
-  padding: 154px 32px 50px;
-
+  padding: 147px 112px 50px 32px;
+  display: grid;
+  justify-content: center;
+  gap: 46px;
+  
   height: 100vh;
   overflow-y: scroll;
 `
 
 export const Header = styled.div`
+  max-width: 904px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 46px;
 
   p {
     font-size: 20px;
@@ -50,14 +53,12 @@ export const HeaderSelect = styled.select`
   background-color: #fbe1e2;
   outline: none;
   appearance: none;
-
-  font-family: 'Nunito';
-  font-size: 16px;
   color: #0d3b66;
+  cursor: pointer;
 `
 
 export const Display = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 280px);
   grid-gap: 32px;
 `

@@ -1,7 +1,7 @@
 import logo from '../../assets/icons/logo.svg';
 import chevron from '../../assets/icons/chevron-bottom.svg';
-import search from '../../assets/icons/search.svg';
 import bannerPets from '../../assets/images/pets.png';
+import { SearchButton } from '@/components/SearchButton';
 
 import {
   Banner,
@@ -12,7 +12,6 @@ import {
   LeftSide,
   Logo,
   RightSide,
-  SearchButton,
   SearchContainer,
   Text,
   Title,
@@ -61,9 +60,7 @@ export function Home() {
             </FilterInput>
             <img src={chevron} alt="" />
           </FilterWrapper>
-          <SearchButton>
-            <img src={search} alt="ícone de lupa" />
-          </SearchButton>
+          <SearchButton />
         </SearchContainer>
       </RightSide>
     </Container>

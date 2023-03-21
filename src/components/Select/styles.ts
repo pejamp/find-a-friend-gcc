@@ -36,15 +36,8 @@ export const FilterInput = styled.select`
   outline: none;
   padding: 20px;
   appearance: none;
+  cursor: pointer;
   position: relative;
-
-  &::before {
-    content: '⌄';
-    width: 12px;
-    height: 6px;
-    position: absolute;
-    color: #ffffff;
-  }
 `
 
 export const FilterInputOption = styled.option`

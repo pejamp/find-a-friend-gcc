@@ -10,12 +10,14 @@ export const Container = styled.div`
   padding: 3px;
   border-radius: 20px;
   background-color: #ffffff;
+  box-shadow: 0px 4px 4px -6px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  transition: all 300ms ease-out;
 
   &:hover {
     background-color: #0d3b66;
 
-    div {
+    div div {
       background-color: #0d3b66;
     }
 

@@ -135,31 +135,4 @@ export const FilterInputOption = styled.option`
   color: #ffffff;
   padding: 8px;
   background-color: #E44449;
-
-  &:hover {
-    background-color: #000;
-  }
 `
-
-export const SearchButton = styled.button`
-  width: 72px;
-  height: 72px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f4d35e;
-  border: none;
-  border-radius: 20px;
-  transition: filter 300ms ease-out;
-
-  img {
-    width: 26px;
-    height: 26px;
-    object-fit: contain;
-  }
-
-  :hover {
-    filter: brightness(0.9);
-  }
-`
-
