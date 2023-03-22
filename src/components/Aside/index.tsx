@@ -80,7 +80,14 @@ const independencyOptions = [
   },
 ]
 
-export function Aside() {
+type AsideProps = {
+  location: {
+    state: string;
+    city: string;
+  };
+}
+
+export function Aside(props: AsideProps) {
   function handleSearchPets() {
     // TO DO
   }
@@ -97,13 +104,13 @@ export function Aside() {
           <HeaderInput>
             <SelectWrapper>
               <HeaderSelect name="uf" id="uf">
-                <option value="pe">PE</option>
+                <option value={props.location.state}>{props.location.state}</option>
               </HeaderSelect>
               <img src={chevron} alt="" />
             </SelectWrapper>
             <SelectWrapper>
               <HeaderSelect name="city" id="city">
-                <option value="recife">Recife</option>
+                <option value={props.location.state}>{props.location.city}</option>
               </HeaderSelect>
               <img src={chevron} alt="" />
             </SelectWrapper>

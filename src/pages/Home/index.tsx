@@ -2,6 +2,7 @@ import logo from '../../assets/icons/logo.svg';
 import chevron from '../../assets/icons/chevron-bottom.svg';
 import bannerPets from '../../assets/images/pets.png';
 import { SearchButton } from '@/components/SearchButton';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Banner,
@@ -16,19 +17,52 @@ import {
   Text,
   Title,
 } from "./styles";
+import { useEffect, useState } from 'react';
+
+type StateProps = {
+  id: number;
+  nome: string;
+  sigla: string;
+}
+
+type CityProps = {
+  code: string;
+  name: string;
+}
 
 export function Home() {
+  const apiURL = "http://localhost:3333";
+  const navigate = useNavigate();
+  const [states, setStates] = useState<StateProps[]>([]);
+  const [selectedState, setSelectedState] = useState('');
+  const [cities, setCities] = useState<CityProps[]>([]);
+  const [selectedCity, setSelectedCity] = useState('');
+
   function handleSearchPets() {
-    // TO DO
+    navigate('/map', { state: { state: selectedState, city: selectedCity } });
   }
 
-  function handleChangeState() {
-    // TO DO
+  async function handleChangeState(event: any) {
+    setSelectedState(event.target.value);
+    const state = event.target.value;
+    const response = await fetch(`${apiURL}/location/citys/${state}`);
+    const data = await response.json();
+    setCities(data.citys);
   }
 
-  function handleChangeCity() {
-    // TO DO
+  function handleChangeCity(event: any) {
+    setSelectedCity(event.target.value);
   }
+
+  async function getStatesFromAPI() {
+    const response = await fetch(`${apiURL}/location/states`);
+    const data = await response.json();
+    setStates(data.states);
+  }
+
+  useEffect(() => {
+    getStatesFromAPI();
+  }, []);
 
   return (
     <Container>
@@ -47,20 +81,20 @@ export function Home() {
         <SearchContainer>
           <p>Busque um amigo:</p>
           <FilterWrapper>
-            <FilterInput name="uf" id="uf" scale={'small'}>
-              <FilterInputOption value="all">PE</FilterInputOption>
+            <FilterInput name="uf" id="uf" scale={'small'} onChange={handleChangeState}>
+              <FilterInputOption value="all">UF</FilterInputOption>
+              {states.map((state) => (<FilterInputOption key={state.id} value={state.sigla}>{state.sigla}</FilterInputOption>))}
             </FilterInput>
             <img src={chevron} alt="" />
           </FilterWrapper>
           <FilterWrapper>
-            <FilterInput name="city" id="city" scale={'large'}>
-              <FilterInputOption value="all">Recife</FilterInputOption>
-              <FilterInputOption value="all">São Paulo</FilterInputOption>
-              <FilterInputOption value="all">São Paulooooooooooooooooooooooo</FilterInputOption>
+            <FilterInput name="city" id="city" scale={'large'} onChange={handleChangeCity}>
+              <FilterInputOption value="all">Cidade</FilterInputOption>
+              {cities.map((city) => (<FilterInputOption key={city.code} value={city.name}>{city.name}</FilterInputOption>))}
             </FilterInput>
             <img src={chevron} alt="" />
           </FilterWrapper>
-          <SearchButton />
+          <SearchButton onClick={handleSearchPets} />
         </SearchContainer>
       </RightSide>
     </Container>
