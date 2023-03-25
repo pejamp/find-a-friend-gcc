@@ -13,7 +13,8 @@ import {
   Display,
 } from './styles'
 import { useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { PetsContext } from '@/context/petsContext'
 
 type PetProps = {
   id: string;
@@ -26,10 +27,21 @@ export function Map() {
   const apiURL = "http://localhost:3333";
   const location = useLocation();
   const { state, city } = location.state;
-  const [pets, setPets] = useState<PetProps[]>([]);
+  //const [filteredPets, setFilteredPets] = useState<PetProps[]>([]);
+  //const [filtered, setFiltered] = useState(false);
+  const { pets, setPets, setFiltered, setFilteredPets, filtered, filteredPets } = useContext(PetsContext);
 
-  function handleFilterByPetType() {
-    // TO DO
+  function handleFilterByPetType(event: any) {
+    const { value } = event.target;
+
+    const filteredPets = pets.filter((pet) => pet.type === value);
+
+    if (value === "all") {
+      setFiltered(false);
+    } else {
+      setFilteredPets(filteredPets);
+      setFiltered(true);
+    }
   }
 
   async function getPetsFromAPI() {
@@ -50,21 +62,25 @@ export function Map() {
       <Content>
         <Header>
           <p>
-            Encontre <span>324 amigos</span> na sua cidade
+            Encontre <span>{pets.length} amigo{pets.length > 1 && 's'}</span> na sua cidade
           </p>
           <SelectWrapper>
-            <HeaderSelect name="size" id="size">
+            <HeaderSelect name="size" id="size" onChange={handleFilterByPetType}>
               <option value="all">Gatos e Cachorros</option>
-              <option value="cats">Gatos</option>
-              <option value="dogs">Cachorros</option>
+              <option value="cat">Gatos</option>
+              <option value="dog">Cachorros</option>
             </HeaderSelect>
             <img src={chevron} alt="" />
           </SelectWrapper>
         </Header>
         <Display>
-          <Card path={dog} type="dog" name="Alfredo" />
-          <Card path={dog} type="cat" name="Tobia" />
-          {pets.map((pet) => (<Card key={pet.id} path={pet.photo_url} type={pet.type} name={pet.name} />))}
+          { 
+            filtered 
+            ?
+            filteredPets.map((pet) => (<Card key={pet.id} path={pet.photo_url} type={pet.type} name={pet.name} />))
+            :
+            pets.map((pet) => (<Card key={pet.id} path={pet.photo_url} type={pet.type} name={pet.name} />))
+          }
         </Display>
       </Content>
     </Container>

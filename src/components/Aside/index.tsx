@@ -3,6 +3,12 @@ import { Select } from '@/components/Select'
 import logo from '@/assets/icons/logo.svg'
 import chevron from '../../assets/icons/chevron-bottom.svg';
 
+import { SearchButton } from '../SearchButton'
+import { useContext, useState } from 'react';
+import { LocationContext } from '@/context/locationContext';
+import { useNavigate } from 'react-router-dom';
+import { PetsContext } from '@/context/petsContext';
+
 import {
   Container,
   AsideHeader,
@@ -13,7 +19,6 @@ import {
   SelectWrapper,
   HeaderSelect
 } from './styles'
-import { SearchButton } from '../SearchButton'
 
 const ageOptions = [
   {
@@ -87,13 +92,48 @@ type AsideProps = {
   };
 }
 
+interface SearchFilter {
+  type: string;
+  value: string;
+}
+
 export function Aside(props: AsideProps) {
-  function handleSearchPets() {
-    // TO DO
+  const apiURL = "http://localhost:3333";
+  const { states, cities, setCities, setSelectedState, setSelectedCity } = useContext(LocationContext);
+  const { pets, setPets, setFilteredPets, setFiltered, filteredPets } = useContext(PetsContext);
+
+  async function handleSearchPets() {
+    const response = await fetch(`${apiURL}/pets/São Paulo`);
+    const data = await response.json();
+    setPets(data.pets);
   }
 
-  function handleChangeSearchFilters() {
-    // TO DO
+  function handleChangeSearchFilters(event: any) {
+    const filterType = event.target.name;
+    const filterValue = event.target.value;
+  }
+
+  async function getFilteredPets(url: string) {
+    const response = await fetch(`${url}`);
+    const data = await response.json();
+    setFilteredPets(data.pets);
+    setFiltered(true);
+  }
+
+  function getFilterUrl(filters: SearchFilter[], newFilter: SearchFilter): string {
+    const filterParams = filters.map((filter) => `${filter.type}=${filter.value}`).join('&');
+    return `${apiURL}/pets/São Paulo?${filterParams}&${newFilter.type}=${newFilter.value}`;
+  }
+
+  async function handleChangeState(event: any) {
+    setSelectedState(event.target.value);
+    const response = await fetch(`${apiURL}/location/citys/${event.target.value}`);
+    const data = await response.json();
+    setCities(data.citys);
+  }
+
+  function handleChangeCity(event: any) {
+    setSelectedCity(event.target.value);
   }
 
   return (
@@ -103,38 +143,40 @@ export function Aside(props: AsideProps) {
           <img src={logo} alt="" />
           <HeaderInput>
             <SelectWrapper>
-              <HeaderSelect name="uf" id="uf">
-                <option value={props.location.state}>{props.location.state}</option>
+              <HeaderSelect name="uf" id="uf" defaultValue={props.location.state} onChange={handleChangeState}>
+                {states.map((state) => (<option key={state.id} value={state.sigla}>{state.sigla}</option>))}
               </HeaderSelect>
               <img src={chevron} alt="" />
             </SelectWrapper>
             <SelectWrapper>
-              <HeaderSelect name="city" id="city">
-                <option value={props.location.state}>{props.location.city}</option>
+              <HeaderSelect name="city" id="city" defaultValue={props.location.city} onChange={handleChangeCity}>
+                {cities.map((city) => (<option key={city.code} value={city.name}>{city.name}</option>))}
               </HeaderSelect>
               <img src={chevron} alt="" />
             </SelectWrapper>
-            <SearchButton />
+            <SearchButton onClick={handleSearchPets} />
           </HeaderInput>
         </div>
       </AsideHeader>
       <AsideContent>
         <ContentHeader>Filtros</ContentHeader>
         <ContentFilters>
-          <Select name="age" label="Idade" options={ageOptions} />
+          <Select name="age" label="Idade" options={ageOptions} onChange={handleChangeSearchFilters} />
 
           <Select
             name="energy"
             label="Nível de energia"
             options={energyOptions}
+            onChange={handleChangeSearchFilters}
           />
 
-          <Select name="size" label="Porte do animal" options={sizeOptions} />
+          <Select name="size" label="Porte do animal" options={sizeOptions} onChange={handleChangeSearchFilters} />
 
           <Select
             name="independency"
             label="Nível de independência"
             options={independencyOptions}
+            onChange={handleChangeSearchFilters}
           />
         </ContentFilters>
       </AsideContent>

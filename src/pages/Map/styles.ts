@@ -8,8 +8,8 @@ export const Content = styled.div`
   flex: 1;
   background-color: #fdeced;
   padding: 147px 112px 50px 32px;
-  display: grid;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
   gap: 46px;
   
   height: 100vh;
@@ -60,5 +60,6 @@ export const HeaderSelect = styled.select`
 export const Display = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 280px);
+  align-content: flex-start;
   grid-gap: 32px;
 `

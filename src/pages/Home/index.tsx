@@ -17,26 +17,14 @@ import {
   Text,
   Title,
 } from "./styles";
-import { useEffect, useState } from 'react';
-
-type StateProps = {
-  id: number;
-  nome: string;
-  sigla: string;
-}
-
-type CityProps = {
-  code: string;
-  name: string;
-}
+import { useContext, useState } from 'react';
+import { LocationContext } from '@/context/locationContext';
+import { PetsContext } from '@/context/petsContext';
 
 export function Home() {
   const apiURL = "http://localhost:3333";
   const navigate = useNavigate();
-  const [states, setStates] = useState<StateProps[]>([]);
-  const [selectedState, setSelectedState] = useState('');
-  const [cities, setCities] = useState<CityProps[]>([]);
-  const [selectedCity, setSelectedCity] = useState('');
+  const { states, cities, setCities, setSelectedCity, setSelectedState, selectedState, selectedCity } = useContext(LocationContext);
 
   function handleSearchPets() {
     navigate('/map', { state: { state: selectedState, city: selectedCity } });
@@ -44,8 +32,7 @@ export function Home() {
 
   async function handleChangeState(event: any) {
     setSelectedState(event.target.value);
-    const state = event.target.value;
-    const response = await fetch(`${apiURL}/location/citys/${state}`);
+    const response = await fetch(`${apiURL}/location/citys/${event.target.value}`);
     const data = await response.json();
     setCities(data.citys);
   }
@@ -53,16 +40,6 @@ export function Home() {
   function handleChangeCity(event: any) {
     setSelectedCity(event.target.value);
   }
-
-  async function getStatesFromAPI() {
-    const response = await fetch(`${apiURL}/location/states`);
-    const data = await response.json();
-    setStates(data.states);
-  }
-
-  useEffect(() => {
-    getStatesFromAPI();
-  }, []);
 
   return (
     <Container>

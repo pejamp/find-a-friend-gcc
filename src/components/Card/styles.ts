@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   max-width: 280px;
+  height: 209px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -55,10 +56,13 @@ export const TypeIcon = styled.div`
 `
 
 export const PetImage = styled.div`
-  object-fit: cover;
-
+  overflow: hidden;
+  border-radius: 20px;
+  height: 135px;
+  
   img {
     width: 100%;
+    object-fit: cover;
   }
 `
 
