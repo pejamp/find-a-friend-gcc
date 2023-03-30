@@ -48,7 +48,6 @@ export function Map() {
     const response = await fetch(`${apiURL}/pets/São Paulo`);
     const data = await response.json();
     setPets(data.pets);
-    console.log(data.pets);
   }
 
   useEffect(() => {

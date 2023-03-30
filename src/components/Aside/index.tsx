@@ -4,7 +4,7 @@ import logo from '@/assets/icons/logo.svg'
 import chevron from '../../assets/icons/chevron-bottom.svg';
 
 import { SearchButton } from '../SearchButton'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { LocationContext } from '@/context/locationContext';
 import { useNavigate } from 'react-router-dom';
 import { PetsContext } from '@/context/petsContext';
@@ -99,6 +99,7 @@ interface SearchFilter {
 
 export function Aside(props: AsideProps) {
   const apiURL = "http://localhost:3333";
+  const [filters, setFilters] = useState<SearchFilter[]>([]);
   const { states, cities, setCities, setSelectedState, setSelectedCity } = useContext(LocationContext);
   const { pets, setPets, setFilteredPets, setFiltered, filteredPets } = useContext(PetsContext);
 
@@ -111,6 +112,18 @@ export function Aside(props: AsideProps) {
   function handleChangeSearchFilters(event: any) {
     const filterType = event.target.name;
     const filterValue = event.target.value;
+
+    const existingFilterIndex = filters.findIndex((filter) => filter.type === filterType);
+
+    if (existingFilterIndex !== -1) {
+      setFilters(prevFilters => {
+        const newFilters = [...prevFilters];
+        newFilters[existingFilterIndex] = { type: filterType, value: filterValue };
+        return newFilters;
+      })
+    } else {
+      setFilters(prevFilters => [...prevFilters, {type: filterType, value: filterValue}])
+    }
   }
 
   async function getFilteredPets(url: string) {
@@ -120,9 +133,9 @@ export function Aside(props: AsideProps) {
     setFiltered(true);
   }
 
-  function getFilterUrl(filters: SearchFilter[], newFilter: SearchFilter): string {
+  function getFilterUrl(filters: SearchFilter[]): string {
     const filterParams = filters.map((filter) => `${filter.type}=${filter.value}`).join('&');
-    return `${apiURL}/pets/São Paulo?${filterParams}&${newFilter.type}=${newFilter.value}`;
+    return `${apiURL}/pets/São Paulo?${filterParams}`;
   }
 
   async function handleChangeState(event: any) {
@@ -136,6 +149,10 @@ export function Aside(props: AsideProps) {
     setSelectedCity(event.target.value);
   }
 
+  useEffect(() => {
+    getFilteredPets(getFilterUrl(filters));
+  }, [filters]);
+
   return (
     <Container>
       <AsideHeader>
@@ -143,14 +160,32 @@ export function Aside(props: AsideProps) {
           <img src={logo} alt="" />
           <HeaderInput>
             <SelectWrapper>
-              <HeaderSelect name="uf" id="uf" defaultValue={props.location.state} onChange={handleChangeState}>
-                {states.map((state) => (<option key={state.id} value={state.sigla}>{state.sigla}</option>))}
+              <HeaderSelect
+                name="uf"
+                id="uf"
+                defaultValue={props.location.state}
+                onChange={handleChangeState}
+              >
+                {states.map((state) => (
+                  <option key={state.id} value={state.sigla}>
+                    {state.sigla}
+                  </option>
+                ))}
               </HeaderSelect>
               <img src={chevron} alt="" />
             </SelectWrapper>
             <SelectWrapper>
-              <HeaderSelect name="city" id="city" defaultValue={props.location.city} onChange={handleChangeCity}>
-                {cities.map((city) => (<option key={city.code} value={city.name}>{city.name}</option>))}
+              <HeaderSelect
+                name="city"
+                id="city"
+                defaultValue={props.location.city}
+                onChange={handleChangeCity}
+              >
+                {cities.map((city) => (
+                  <option key={city.code} value={city.name}>
+                    {city.name}
+                  </option>
+                ))}
               </HeaderSelect>
               <img src={chevron} alt="" />
             </SelectWrapper>
@@ -161,7 +196,12 @@ export function Aside(props: AsideProps) {
       <AsideContent>
         <ContentHeader>Filtros</ContentHeader>
         <ContentFilters>
-          <Select name="age" label="Idade" options={ageOptions} onChange={handleChangeSearchFilters} />
+          <Select
+            name="age"
+            label="Idade"
+            options={ageOptions}
+            onChange={handleChangeSearchFilters}
+          />
 
           <Select
             name="energy"
@@ -170,10 +210,15 @@ export function Aside(props: AsideProps) {
             onChange={handleChangeSearchFilters}
           />
 
-          <Select name="size" label="Porte do animal" options={sizeOptions} onChange={handleChangeSearchFilters} />
+          <Select
+            name="size"
+            label="Porte do animal"
+            options={sizeOptions}
+            onChange={handleChangeSearchFilters}
+          />
 
           <Select
-            name="independency"
+            name="independence"
             label="Nível de independência"
             options={independencyOptions}
             onChange={handleChangeSearchFilters}
@@ -181,5 +226,5 @@ export function Aside(props: AsideProps) {
         </ContentFilters>
       </AsideContent>
     </Container>
-  )
+  );
 }
