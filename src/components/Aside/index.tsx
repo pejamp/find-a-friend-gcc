@@ -100,13 +100,14 @@ interface SearchFilter {
 export function Aside(props: AsideProps) {
   const apiURL = "http://localhost:3333";
   const [filters, setFilters] = useState<SearchFilter[]>([]);
-  const { states, cities, setCities, setSelectedState, setSelectedCity } = useContext(LocationContext);
-  const { pets, setPets, setFilteredPets, setFiltered, filteredPets } = useContext(PetsContext);
+  const { states, cities, setCities, setSelectedState, selectedCity, setSelectedCity } = useContext(LocationContext);
+  const { setPets, setFilteredPets, setFiltered } = useContext(PetsContext);
 
   async function handleSearchPets() {
-    const response = await fetch(`${apiURL}/pets/São Paulo`);
+    const response = await fetch(`${apiURL}/pets/${selectedCity}`);
     const data = await response.json();
     setPets(data.pets);
+    setFiltered(false);
   }
 
   function handleChangeSearchFilters(event: any) {
@@ -135,7 +136,7 @@ export function Aside(props: AsideProps) {
 
   function getFilterUrl(filters: SearchFilter[]): string {
     const filterParams = filters.map((filter) => `${filter.type}=${filter.value}`).join('&');
-    return `${apiURL}/pets/São Paulo?${filterParams}`;
+    return `${apiURL}/pets/${selectedCity}?${filterParams}`;
   }
 
   async function handleChangeState(event: any) {

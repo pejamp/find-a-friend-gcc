@@ -21,6 +21,8 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 auto;
+  width: 100%;
 
   p {
     font-size: 20px;
@@ -62,4 +64,5 @@ export const Display = styled.div`
   grid-template-columns: repeat(3, 280px);
   align-content: flex-start;
   grid-gap: 32px;
+  justify-content: center;
 `

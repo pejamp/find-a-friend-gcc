@@ -2,7 +2,6 @@ import { Aside } from '~/Aside'
 import { Card } from '~/Card'
 
 import chevron from '@/assets/icons/chevron-bottom-blue.svg'
-import dog from '@/assets/images/dog.png'
 
 import {
   Container,
@@ -16,19 +15,10 @@ import { useLocation } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
 import { PetsContext } from '@/context/petsContext'
 
-type PetProps = {
-  id: string;
-  name: string;
-  type: string;
-  photo_url: string;
-}
-
 export function Map() {
   const apiURL = "http://localhost:3333";
   const location = useLocation();
   const { state, city } = location.state;
-  //const [filteredPets, setFilteredPets] = useState<PetProps[]>([]);
-  //const [filtered, setFiltered] = useState(false);
   const { pets, setPets, setFiltered, setFilteredPets, filtered, filteredPets } = useContext(PetsContext);
 
   function handleFilterByPetType(event: any) {
