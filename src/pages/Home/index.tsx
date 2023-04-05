@@ -1,8 +1,8 @@
-import logo from '../../assets/icons/logo.svg';
-import chevron from '../../assets/icons/chevron-bottom.svg';
-import bannerPets from '../../assets/images/pets.png';
-import { SearchButton } from '@/components/SearchButton';
-import { useNavigate } from 'react-router-dom';
+import logo from "../../assets/icons/logo.svg";
+import chevron from "../../assets/icons/chevron-bottom.svg";
+import bannerPets from "../../assets/images/pets.png";
+import { SearchButton } from "@/components/SearchButton";
+import { useNavigate } from "react-router-dom";
 
 import {
   Banner,
@@ -17,22 +17,31 @@ import {
   Text,
   Title,
 } from "./styles";
-import { useContext, useState } from 'react';
-import { LocationContext } from '@/context/locationContext';
-import { PetsContext } from '@/context/petsContext';
+import { useContext, useState } from "react";
+import { LocationContext } from "@/context/locationContext";
 
 export function Home() {
   const apiURL = "http://localhost:3333";
   const navigate = useNavigate();
-  const { states, cities, setCities, setSelectedCity, setSelectedState, selectedState, selectedCity } = useContext(LocationContext);
+  const {
+    states,
+    cities,
+    setCities,
+    setSelectedCity,
+    setSelectedState,
+    selectedState,
+    selectedCity,
+  } = useContext(LocationContext);
 
   function handleSearchPets() {
-    navigate('/map', { state: { state: selectedState, city: selectedCity } });
+    navigate("/map", { state: { state: selectedState, city: selectedCity } });
   }
 
   async function handleChangeState(event: any) {
     setSelectedState(event.target.value);
-    const response = await fetch(`${apiURL}/location/citys/${event.target.value}`);
+    const response = await fetch(
+      `${apiURL}/location/citys/${event.target.value}`
+    );
     const data = await response.json();
     setCities(data.citys);
   }
@@ -49,7 +58,9 @@ export function Home() {
           <span>FindAFriend</span>
         </Logo>
         <Title>Leve a felicidade para o seu lar</Title>
-        <Text>Encontre o animal de estimação ideal para seu estilo de vida!</Text>
+        <Text>
+          Encontre o animal de estimação ideal para seu estilo de vida!
+        </Text>
       </LeftSide>
       <RightSide>
         <Banner>
@@ -58,16 +69,34 @@ export function Home() {
         <SearchContainer>
           <p>Busque um amigo:</p>
           <FilterWrapper>
-            <FilterInput name="uf" id="uf" scale={'small'} onChange={handleChangeState}>
+            <FilterInput
+              name="uf"
+              id="uf"
+              scale={"small"}
+              onChange={handleChangeState}
+            >
               <FilterInputOption value="all">UF</FilterInputOption>
-              {states.map((state) => (<FilterInputOption key={state.id} value={state.sigla}>{state.sigla}</FilterInputOption>))}
+              {states.map((state) => (
+                <FilterInputOption key={state.id} value={state.sigla}>
+                  {state.sigla}
+                </FilterInputOption>
+              ))}
             </FilterInput>
             <img src={chevron} alt="" />
           </FilterWrapper>
           <FilterWrapper>
-            <FilterInput name="city" id="city" scale={'large'} onChange={handleChangeCity}>
+            <FilterInput
+              name="city"
+              id="city"
+              scale={"large"}
+              onChange={handleChangeCity}
+            >
               <FilterInputOption value="all">Cidade</FilterInputOption>
-              {cities.map((city) => (<FilterInputOption key={city.code} value={city.name}>{city.name}</FilterInputOption>))}
+              {cities.map((city) => (
+                <FilterInputOption key={city.code} value={city.name}>
+                  {city.name}
+                </FilterInputOption>
+              ))}
             </FilterInput>
             <img src={chevron} alt="" />
           </FilterWrapper>
@@ -75,5 +104,5 @@ export function Home() {
         </SearchContainer>
       </RightSide>
     </Container>
-  )
+  );
 }

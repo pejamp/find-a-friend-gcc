@@ -1,7 +1,7 @@
-import { Aside } from '~/Aside'
-import { Card } from '~/Card'
+import { Aside } from "~/Aside";
+import { Card } from "~/Card";
 
-import chevron from '@/assets/icons/chevron-bottom-blue.svg'
+import chevron from "@/assets/icons/chevron-bottom-blue.svg";
 
 import {
   Container,
@@ -10,16 +10,23 @@ import {
   Header,
   HeaderSelect,
   Display,
-} from './styles'
-import { useLocation } from 'react-router-dom'
-import { useContext, useEffect, useState } from 'react'
-import { PetsContext } from '@/context/petsContext'
+} from "./styles";
+import { useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { PetsContext } from "@/context/petsContext";
 
 export function Map() {
   const apiURL = "http://localhost:3333";
   const location = useLocation();
   const { state, city } = location.state;
-  const { pets, setPets, setFiltered, setFilteredPets, filtered, filteredPets } = useContext(PetsContext);
+  const {
+    pets,
+    setPets,
+    setFiltered,
+    setFilteredPets,
+    filtered,
+    filteredPets,
+  } = useContext(PetsContext);
 
   function handleFilterByPetType(event: any) {
     const { value } = event.target;
@@ -46,15 +53,23 @@ export function Map() {
 
   return (
     <Container>
-      <Aside location={{state, city}} />
+      <Aside location={{ state, city }} />
 
       <Content>
         <Header>
           <p>
-            Encontre <span>{pets.length} amigo{pets.length > 1 && 's'}</span> na sua cidade
+            Encontre{" "}
+            <span>
+              {pets.length} amigo{pets.length > 1 && "s"}
+            </span>{" "}
+            na sua cidade
           </p>
           <SelectWrapper>
-            <HeaderSelect name="size" id="size" onChange={handleFilterByPetType}>
+            <HeaderSelect
+              name="size"
+              id="size"
+              onChange={handleFilterByPetType}
+            >
               <option value="all">Gatos e Cachorros</option>
               <option value="cat">Gatos</option>
               <option value="dog">Cachorros</option>
@@ -63,15 +78,27 @@ export function Map() {
           </SelectWrapper>
         </Header>
         <Display>
-          { 
-            filtered 
-            ?
-            filteredPets.map((pet) => (<Card key={pet.id} path={pet.photo_url} type={pet.type} name={pet.name} />))
-            :
-            pets.map((pet) => (<Card key={pet.id} path={pet.photo_url} type={pet.type} name={pet.name} />))
-          }
+          {filtered
+            ? filteredPets.map((pet) => (
+                <Card
+                  key={pet.id}
+                  id={pet.id}
+                  path={pet.photo_url}
+                  type={pet.type}
+                  name={pet.name}
+                />
+              ))
+            : pets.map((pet) => (
+                <Card
+                  key={pet.id}
+                  id={pet.id}
+                  path={pet.photo_url}
+                  type={pet.type}
+                  name={pet.name}
+                />
+              ))}
         </Display>
       </Content>
     </Container>
-  )
+  );
 }

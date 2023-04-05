@@ -1,29 +1,42 @@
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Banner, Container, ImageItem, ImageList } from "./styles";
 
+export interface ImageProps {
+  id: string;
+  image: string;
+  petId: string;
+  photo_url: string;
+}
+
 interface GalleryProps {
-  images: any;
+  images: ImageProps[];
 }
 
 export function Gallery({ images }: GalleryProps) {
-  const [selectedBanner, setSelectedBanner] = useState(images[0].value);
+  const [selectedBanner, setSelectedBanner] = useState('');
 
-  function handleBannerChange(event: any) {
+  useEffect(() => {
+    if (images.length > 0) {
+      setSelectedBanner(images[0].photo_url);
+    }
+  }, [images]);
+
+  function handleBannerChange(event: ChangeEvent<HTMLInputElement>) {
     setSelectedBanner(event.target.value);
   }
 
   return (
     <Container>
-      <Banner src={selectedBanner} alt="" />
+      <Banner src={selectedBanner} alt=""/>
       <ImageList>
-        {images.map((image: any) => (
+        {images.map((image) => (
           <ImageItem key={image.id}>
-            <img src={image.value} alt="" />
+            <img src={image.photo_url} alt={image.image} />
             <input
               type="radio"
               name="image"
-              value={image.value}
-              checked={selectedBanner === image.value}
+              value={image.photo_url}
+              checked={selectedBanner === image.photo_url}
               onChange={handleBannerChange}
             />
           </ImageItem>
